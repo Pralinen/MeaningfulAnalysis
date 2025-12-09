@@ -1,2 +1,2 @@
 # MeaningfulAnalysis
-Data analysis for bachelor thesis in psychology @ LU.
+Data analysis repo for bachelor thesis in psychology @ LU.
