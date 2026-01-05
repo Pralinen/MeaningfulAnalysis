@@ -119,8 +119,8 @@ run_script_02 <- function(dataset_info) {
 
   # Load and prepare data
   data <- read.csv(dataset_info$path) %>%
-    mutate(Meaning = MILjudgements, Depression = DEP_Corrected, Anxiety = GADscore) %>%
-    filter(complete.cases(Autonomous, RAI, Meaning, Depression, Anxiety, Age, Sex))
+    mutate(Meaning = MILjudgements, Depression = DEP_Corrected) %>%
+    filter(complete.cases(Autonomous, RAI, Meaning, Depression, Age, Sex))
 
   cat("Sample size: N =", nrow(data), "\n\n")
 
@@ -128,7 +128,7 @@ run_script_02 <- function(dataset_info) {
   # MODEL 0: CONTROLS ONLY (BASELINE)
   # ============================================================================
   cat("MODEL 0: Controls Only (Baseline)\n")
-  m_controls <- lm(Meaning ~ Depression + Anxiety + Age + Sex, data = data)
+  m_controls <- lm(Meaning ~ Depression + Age + Sex, data = data)
   r2_controls <- summary(m_controls)$r.squared
   cat("  R² =", round(r2_controls, 4), "\n\n")
 
@@ -136,7 +136,7 @@ run_script_02 <- function(dataset_info) {
   # MODEL 1: AUTONOMOUS + CONTROLS
   # ============================================================================
   cat("MODEL 1: Autonomous + Controls\n")
-  m1 <- lm(Meaning ~ Autonomous + Depression + Anxiety + Age + Sex, data = data)
+  m1 <- lm(Meaning ~ Autonomous + Depression + Age + Sex, data = data)
   sum1 <- summary(m1)
   r2_auto <- sum1$r.squared
   delta_r2_auto <- r2_auto - r2_controls
@@ -161,7 +161,7 @@ run_script_02 <- function(dataset_info) {
   # MODEL 2: RAI + CONTROLS
   # ============================================================================
   cat("MODEL 2: RAI + Controls\n")
-  m2 <- lm(Meaning ~ RAI + Depression + Anxiety + Age + Sex, data = data)
+  m2 <- lm(Meaning ~ RAI + Depression + Age + Sex, data = data)
   sum2 <- summary(m2)
   r2_rai <- sum2$r.squared
   delta_r2_rai <- r2_rai - r2_controls
@@ -186,7 +186,7 @@ run_script_02 <- function(dataset_info) {
   # MODEL 3: BOTH PREDICTORS (CRITICAL TEST)
   # ============================================================================
   cat("MODEL 3: Both Autonomous + RAI + Controls\n")
-  m3 <- lm(Meaning ~ Autonomous + RAI + Depression + Anxiety + Age + Sex, data = data)
+  m3 <- lm(Meaning ~ Autonomous + RAI + Depression + Age + Sex, data = data)
   sum3 <- summary(m3)
   r2_both <- sum3$r.squared
 
